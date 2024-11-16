@@ -20,7 +20,7 @@ const AddProject = forwardRef(function AddProject({ ...props }, ref) {
                 <button type="submit" className="w-full bg-stone-500 text-white px-4 py-2 rounded-md hover:bg-stone-700 transition duration-300">
                     Save
                 </button>
-                <button type="reset" className="w-full bg-stone-500 text-white px-4 py-2 rounded-md hover:bg-stone-700 transition duration-300">
+                <button id="discard-button" type="reset" className="w-full bg-stone-500 text-white px-4 py-2 rounded-md hover:bg-stone-700 transition duration-300">
                     Cancel
                 </button>
             </div>
