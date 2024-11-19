@@ -1,12 +1,14 @@
 import logo from '../public/logo.png';
 import React from 'react';
 import AddProject from './components/AddProject';
+import AddTask from './components/AddTask';
 import PaginatedList from './components/PaginatedList';
 
 
 function App() {
   const [editorState, setEditorState] = React.useState("startingState");
   const createProejectRef = React.useRef();
+  const createTaskRef = React.useRef();
   const [projects, setProjects] = React.useState([]);
 
  function handleEditorState() {
@@ -40,9 +42,9 @@ return (
               <button onClick={handleEditorState} className="px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4 bg-stone-500 text-white hover:bg-stone-700 rounded-md transition-all duration-300">Create new project</button>
             </>
           ) : editorState === "projectCreationState" ? (
-          <AddProject ref={createProejectRef} onSubmit={handleProjectSubmit}/>
+            <AddProject ref={createProejectRef} onSubmit={handleProjectSubmit}/>
           ) : (
-            <div>output task creation</div>
+            <AddTask ref={createTaskRef} project={projects[0]} onSubmit={handleProjectSubmit}/>
           )
         }
         </div>
