@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PaginatedList = ({ projects }) => {
+const PaginatedList = ({ listItems }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -9,10 +9,12 @@ const PaginatedList = ({ projects }) => {
   const endIndex = startIndex + itemsPerPage;
 
   // Get current page's items
-  const currentItems = projects.slice(startIndex, endIndex);
+  const currentItems = listItems.slice(startIndex, endIndex);
 
   // Calculate total pages
-  const totalPages = Math.ceil(projects.length / itemsPerPage);
+  const totalPages = Math.ceil(listItems.length / itemsPerPage);
+
+  console.log("list items:", currentItems);
 
   const goToPage = (page) => {
     setCurrentPage(page);

@@ -23,12 +23,15 @@ function App() {
   };
 
   const handleTaskSubmit = (task_data) => {
-    projects[projects.length - 1].tasks.push(task_data)
-    createTaskRef.current.querySelector("#task-name").value = "";
+    createTaskRef.current.querySelector("#title").value = "";
   };
 
   React.useEffect(() => {
-    console.log("Updated Projects:", projects);
+    if (projects.length > 0 && 'tasks' in projects[projects.length - 1]) {
+      console.log("Updated tasks:", projects[projects.length - 1].tasks);
+    }
+    console.log("Updated projects:", projects);
+
   }, [projects]);
 
   return (
@@ -42,7 +45,7 @@ function App() {
           >
             + ADD PROJECT
           </button>
-          <PaginatedList projects={projects} />
+          <PaginatedList listItems={projects} />
         </aside>
         <div className="flex-1 flex flex-col items-center justify-center bg-gray-100 gap-4 p-4">
           {editorState === "startingState" ? (
@@ -67,11 +70,13 @@ function App() {
               onSubmit={handleProjectSubmit}
             />
           ) : (
-            <AddTask
-              ref={createTaskRef}
-              project={projects[projects.length - 1]}
-              onSubmit={handleTaskSubmit}
-            />
+            <>
+              <AddTask
+                ref={createTaskRef}
+                project={projects[projects.length - 1]}
+                onSubmit={handleTaskSubmit}
+              />
+            </>
           )}
         </div>
       </div>

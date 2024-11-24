@@ -1,7 +1,10 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
+import PaginatedList from "./PaginatedList";
 
 
 const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {    
+    const [tasks, setTasks] = useState(project.tasks);
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         
@@ -10,6 +13,7 @@ const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {
             const dataObject = Object.fromEntries(formData.entries());
         
             props.onSubmit(dataObject); 
+            setTasks([...tasks, dataObject])
         }
     };
     
@@ -27,11 +31,12 @@ const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {
                      Add Task
                 </button>
             </div>
-            <div className="mb-4" id={"task-name"}>
-                 <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Tasks</label>
-                 <input id="name" type="text" name="name" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"></input>
+            <div className="mb-4">
+                 <label htmlFor="title" className="block text-gray-700 font-medium mb-2">Tasks</label>
+                 <input id="title" type="text" name="title" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"></input>
             </div>
          </form>
+         <PaginatedList listItems={tasks} />
         </>
     );
 })
