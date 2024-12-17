@@ -1,5 +1,5 @@
 import { forwardRef, useState } from "react";
-import PaginatedList from "./PaginatedList";
+import TaskList from "./TaskList";
 
 
 const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {    
@@ -36,7 +36,7 @@ const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {
                  <input id="title" type="text" name="title" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"></input>
             </div>
          </form>
-         <PaginatedList listItems={tasks} />
+         <TaskList listItems={tasks} />
         </>
     );
 })

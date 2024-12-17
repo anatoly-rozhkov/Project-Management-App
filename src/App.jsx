@@ -2,13 +2,22 @@ import logo from "../public/logo.png";
 import React from "react";
 import AddProject from "./components/AddProject";
 import AddTask from "./components/AddTask";
-import PaginatedList from "./components/PaginatedList";
+import ProjectList from "./components/ProjectList";
 
 function App() {
   const [editorState, setEditorState] = React.useState("startingState");
   const createProejectRef = React.useRef();
   const createTaskRef = React.useRef();
   const [projects, setProjects] = React.useState([]);
+
+  const handleIndex = (index) => {
+    console.log(`Index received in parent: ${index}`);
+  };
+  const projectIndexRef = React.useRef(handleIndex);
+
+  function handleAddNewProjectClick() {
+    
+  }
 
   function handleEditorState() {
     if (editorState === "startingState") {
@@ -45,7 +54,7 @@ function App() {
           >
             + ADD PROJECT
           </button>
-          <PaginatedList listItems={projects} />
+          <ProjectList listItems={projects} ref={projectIndexRef}/>
         </aside>
         <div className="flex-1 flex flex-col items-center justify-center bg-gray-100 gap-4 p-4">
           {editorState === "startingState" ? (
