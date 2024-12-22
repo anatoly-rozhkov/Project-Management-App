@@ -1,13 +1,14 @@
 import { forwardRef } from "react";
 
 
-const AddProject = forwardRef(function AddProject({ ...props }, ref) {    
+const AddProject = forwardRef(function AddProject({ ...props }, ref) {  
     const handleSubmit = (event) => {
         event.preventDefault();
         
         if (props.onSubmit) {
             const formData = new FormData(ref.current);
             const dataObject = Object.fromEntries(formData.entries());
+            dataObject.tasks = []
         
             props.onSubmit(dataObject); 
         }

@@ -14,7 +14,7 @@ const PaginatedList = ({ listItems }) => {
   // Calculate total pages
   const totalPages = Math.ceil(listItems.length / itemsPerPage);
 
-  console.log("list items:", currentItems);
+  // console.log("list items:", currentItems);
 
   const goToPage = (page) => {
     setCurrentPage(page);

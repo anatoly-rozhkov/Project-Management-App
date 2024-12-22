@@ -14,7 +14,7 @@ const TaskList = ({ listItems }) => {
   // Calculate total pages
   const totalPages = Math.ceil(listItems.length / itemsPerPage);
 
-  console.log("task list items:", currentItems);
+  // console.log("task list items:", currentItems);
 
   const goToPage = (page) => {
     setCurrentPage(page);

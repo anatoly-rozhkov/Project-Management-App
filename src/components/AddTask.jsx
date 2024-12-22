@@ -3,7 +3,7 @@ import TaskList from "./TaskList";
 
 
 const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {    
-    const [tasks, setTasks] = useState(project.tasks);
+    // const [tasks, setTasks] = useState(project.tasks);
     
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -13,7 +13,7 @@ const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {
             const dataObject = Object.fromEntries(formData.entries());
         
             props.onSubmit(dataObject); 
-            setTasks([...tasks, dataObject])
+            // setTasks([...tasks, dataObject])
         }
     };
     
@@ -36,7 +36,7 @@ const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {
                  <input id="title" type="text" name="title" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"></input>
             </div>
          </form>
-         <TaskList listItems={tasks} />
+         <TaskList listItems={project.tasks} />
         </>
     );
 })

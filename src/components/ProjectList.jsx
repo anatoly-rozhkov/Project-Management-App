@@ -9,7 +9,7 @@ const ProjectList = forwardRef(function ProjectList({ listItems, ...props }, ref
         
     const handleClick = (index) => {
         ref.current(index);
-        console.log(`Clicked item index: ${index}`);
+        // console.log(`Clicked item index: ${index}`);
       };
 
     // Calculate start and end indices
@@ -22,7 +22,7 @@ const ProjectList = forwardRef(function ProjectList({ listItems, ...props }, ref
     // Calculate total pages
     const totalPages = Math.ceil(listItems.length / itemsPerPage);
 
-    console.log("project list items:", currentItems);
+    // console.log("project list items:", currentItems);
 
     const goToPage = (page) => {
     setCurrentPage(page);

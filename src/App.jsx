@@ -9,14 +9,17 @@ function App() {
   const createProejectRef = React.useRef();
   const createTaskRef = React.useRef();
   const [projects, setProjects] = React.useState([]);
+  const [currentIndex, setCurrentIndex] = React.useState(null);
+
 
   const handleIndex = (index) => {
-    console.log(`Index received in parent: ${index}`);
+    setEditorState("secondaryProjectCreationState");
+    setCurrentIndex(index);
   };
   const projectIndexRef = React.useRef(handleIndex);
 
   function handleAddNewProjectClick() {
-    
+    setEditorState("projectCreationState");
   }
 
   function handleEditorState() {
@@ -26,20 +29,23 @@ function App() {
   }
 
   const handleProjectSubmit = (project_data) => {
-    project_data.tasks = []
     setProjects((projects) => [...projects, project_data]);
+    // console.log("set projects:", projects);
     setEditorState("taskCreationState");
   };
 
   const handleTaskSubmit = (task_data) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) => {
+          return { ...project, tasks: [...project.tasks, task_data] };
+      })
+    );
     createTaskRef.current.querySelector("#title").value = "";
   };
 
   React.useEffect(() => {
     if (projects.length > 0 && 'tasks' in projects[projects.length - 1]) {
-      console.log("Updated tasks:", projects[projects.length - 1].tasks);
     }
-    console.log("Updated projects:", projects);
 
   }, [projects]);
 
@@ -49,7 +55,7 @@ function App() {
         <aside className="w-1/4 h-[calc(100vh-2.5rem)] bg-black text-white flex flex-col items-center justify-start gap-4 pt-20 p-4 fixed top-20 rounded-tr-xl">
           <h2>YOUR PROJECTS</h2>
           <button
-            onClick={handleEditorState}
+            onClick={handleAddNewProjectClick}
             className="px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4 bg-stone-700 text-white hover:bg-stone-800 rounded-md transition-all duration-300"
           >
             + ADD PROJECT
@@ -78,15 +84,24 @@ function App() {
               ref={createProejectRef}
               onSubmit={handleProjectSubmit}
             />
-          ) : (
+          ) : editorState === "secondaryProjectCreationState" ? (
             <>
               <AddTask
                 ref={createTaskRef}
-                project={projects[projects.length - 1]}
+                project={projects[currentIndex]}
                 onSubmit={handleTaskSubmit}
               />
             </>
-          )}
+          ) : (
+            <>
+            <AddTask
+              ref={createTaskRef}
+              project={projects[projects.length - 1]}
+              onSubmit={handleTaskSubmit}
+            />
+          </>
+          )
+        }
         </div>
       </div>
     </>
