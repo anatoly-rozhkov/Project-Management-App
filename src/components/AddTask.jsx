@@ -2,7 +2,7 @@ import { forwardRef, useState } from "react";
 import TaskList from "./TaskList";
 
 
-const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {    
+const AddTask = forwardRef(function AddTask({  projects, projectIndex, ...props }, ref) {    
     // const [tasks, setTasks] = useState(project.tasks);
     
     const handleSubmit = (event) => {
@@ -11,12 +11,15 @@ const AddTask = forwardRef(function AddTask({  project, ...props }, ref) {
         if (props.onSubmit) {
             const formData = new FormData(ref.current);
             const dataObject = Object.fromEntries(formData.entries());
+            // console.log("project data:", dataObject);
         
-            props.onSubmit(dataObject); 
+            props.onSubmit(dataObject, projectIndex); 
             // setTasks([...tasks, dataObject])
         }
     };
-    
+
+    const project = projects[projectIndex]
+    // console.log("project1:", project);
     
     return (
         <>

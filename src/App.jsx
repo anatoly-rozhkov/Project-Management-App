@@ -34,20 +34,34 @@ function App() {
     setEditorState("taskCreationState");
   };
 
-  const handleTaskSubmit = (task_data) => {
-    setProjects((prevProjects) =>
-      prevProjects.map((project) => {
-          return { ...project, tasks: [...project.tasks, task_data] };
-      })
-    );
+  const handleTaskSubmit = (task_data, projectIndex) => {
+    setProjects((prevProjects) => {
+      if (projectIndex < 0 || projectIndex >= prevProjects.length) {
+          console.error("Invalid project index:", projectIndex);
+          return prevProjects;
+      }
+
+      // Create a copy of the projects array
+      const updatedProjects = [...prevProjects];
+
+      // Update the tasks array for the specific project
+      updatedProjects[projectIndex] = {
+          ...updatedProjects[projectIndex],
+          tasks: [...updatedProjects[projectIndex].tasks, task_data]
+      };
+
+      return updatedProjects;
+  });
+    // TODO after this the project indexing breakes down or some shit
+    // Maybe I should return the whole fucking array or something
     createTaskRef.current.querySelector("#title").value = "";
   };
 
-  React.useEffect(() => {
-    if (projects.length > 0 && 'tasks' in projects[projects.length - 1]) {
-    }
+  // React.useEffect(() => {
+  //   if (projects.length > 0 && 'tasks' in projects[projects.length - 1]) {
+  //   }
 
-  }, [projects]);
+  // }, [projects]);
 
   return (
     <>
@@ -88,7 +102,8 @@ function App() {
             <>
               <AddTask
                 ref={createTaskRef}
-                project={projects[currentIndex]}
+                projects={projects}
+                projectIndex={currentIndex}
                 onSubmit={handleTaskSubmit}
               />
             </>
@@ -96,7 +111,8 @@ function App() {
             <>
             <AddTask
               ref={createTaskRef}
-              project={projects[projects.length - 1]}
+              projects={projects}
+              projectIndex={projects.length - 1}
               onSubmit={handleTaskSubmit}
             />
           </>
