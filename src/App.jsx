@@ -21,6 +21,23 @@ function App() {
     setEditorState("projectCreationState");
   }
 
+  function handleProjectDeleteClick(deleteProejctIndex) {
+    setEditorState("startingState");
+    setProjects((prevProjects) => {
+      if (deleteProejctIndex < 0 || deleteProejctIndex >= prevProjects.length) {
+        console.error("Invalid project index:", deleteProejctIndex);
+        return prevProjects;
+      }
+
+      const updatedProjects = [
+        ...prevProjects.slice(0, deleteProejctIndex),
+        ...prevProjects.slice(deleteProejctIndex + 1),
+      ];
+
+      return updatedProjects;
+    });
+  }
+
   function handleEditorState() {
     if (editorState === "startingState") {
       setEditorState("projectCreationState");
@@ -89,7 +106,11 @@ function App() {
               onSubmit={handleProjectSubmit}
             />
           ) : editorState === "secondaryProjectCreationState" ? (
+            // TODO add delete project button here, so that I wouldn't have to mess with imperative handles
             <>
+              <button onClick={() => handleProjectDeleteClick(currentIndex)}>
+                Delete
+              </button>
               <AddTask
                 ref={createTaskRef}
                 projects={projects}
@@ -98,8 +119,13 @@ function App() {
                 onSubmit={handleTaskSubmit}
               />
             </>
-          ) : (
+          ) : editorState === "taskCreationState" ? (
             <>
+              <button
+                onClick={() => handleProjectDeleteClick(projects.length - 1)}
+              >
+                Delete
+              </button>
               <AddTask
                 ref={createTaskRef}
                 projects={projects}
@@ -108,7 +134,7 @@ function App() {
                 onSubmit={handleTaskSubmit}
               />
             </>
-          )}
+          ) : null}
         </div>
       </div>
     </>

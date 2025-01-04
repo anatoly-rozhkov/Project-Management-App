@@ -28,7 +28,7 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
       {currentItems.map((obj, index) => (
           <li key={index}>
             {obj.title}
-            <button onClick={() => handleClick(startIndex + index)}>delete</button>
+            <button onClick={() => handleClick(startIndex + index)}>Clear</button>
           </li>
         ))}
       </ul>

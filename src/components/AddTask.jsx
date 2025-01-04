@@ -17,7 +17,6 @@ const AddTask = forwardRef(function AddTask(
   };
 
   const project = projects[projectIndex];
-  console.log("project", project);
 
   const handleIndex = (taskIndex, currentProjectIndex) => {
     setProjects((prevProjects) => {
