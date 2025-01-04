@@ -11,7 +11,6 @@ function App() {
   const [projects, setProjects] = React.useState([]);
   const [currentIndex, setCurrentIndex] = React.useState(null);
 
-
   const handleIndex = (index) => {
     setEditorState("secondaryProjectCreationState");
     setCurrentIndex(index);
@@ -30,15 +29,14 @@ function App() {
 
   const handleProjectSubmit = (project_data) => {
     setProjects((projects) => [...projects, project_data]);
-    // console.log("set projects:", projects);
     setEditorState("taskCreationState");
   };
 
   const handleTaskSubmit = (task_data, projectIndex) => {
     setProjects((prevProjects) => {
       if (projectIndex < 0 || projectIndex >= prevProjects.length) {
-          console.error("Invalid project index:", projectIndex);
-          return prevProjects;
+        console.error("Invalid project index:", projectIndex);
+        return prevProjects;
       }
 
       // Create a copy of the projects array
@@ -46,22 +44,14 @@ function App() {
 
       // Update the tasks array for the specific project
       updatedProjects[projectIndex] = {
-          ...updatedProjects[projectIndex],
-          tasks: [...updatedProjects[projectIndex].tasks, task_data]
+        ...updatedProjects[projectIndex],
+        tasks: [...updatedProjects[projectIndex].tasks, task_data],
       };
 
       return updatedProjects;
-  });
-    // TODO after this the project indexing breakes down or some shit
-    // Maybe I should return the whole fucking array or something
+    });
     createTaskRef.current.querySelector("#title").value = "";
   };
-
-  // React.useEffect(() => {
-  //   if (projects.length > 0 && 'tasks' in projects[projects.length - 1]) {
-  //   }
-
-  // }, [projects]);
 
   return (
     <>
@@ -74,7 +64,7 @@ function App() {
           >
             + ADD PROJECT
           </button>
-          <ProjectList listItems={projects} ref={projectIndexRef}/>
+          <ProjectList listItems={projects} ref={projectIndexRef} />
         </aside>
         <div className="flex-1 flex flex-col items-center justify-center bg-gray-100 gap-4 p-4">
           {editorState === "startingState" ? (
@@ -103,21 +93,22 @@ function App() {
               <AddTask
                 ref={createTaskRef}
                 projects={projects}
+                setProjects={setProjects}
                 projectIndex={currentIndex}
                 onSubmit={handleTaskSubmit}
               />
             </>
           ) : (
             <>
-            <AddTask
-              ref={createTaskRef}
-              projects={projects}
-              projectIndex={projects.length - 1}
-              onSubmit={handleTaskSubmit}
-            />
-          </>
-          )
-        }
+              <AddTask
+                ref={createTaskRef}
+                projects={projects}
+                setProjects={setProjects}
+                projectIndex={projects.length - 1}
+                onSubmit={handleTaskSubmit}
+              />
+            </>
+          )}
         </div>
       </div>
     </>

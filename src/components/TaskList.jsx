@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 
-const TaskList = ({ listItems }) => {
+const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const handleClick = (index) => {
+    ref.current(index);
+  };
 
   // Calculate start and end indices
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -14,8 +18,6 @@ const TaskList = ({ listItems }) => {
   // Calculate total pages
   const totalPages = Math.ceil(listItems.length / itemsPerPage);
 
-  // console.log("task list items:", currentItems);
-
   const goToPage = (page) => {
     setCurrentPage(page);
   };
@@ -23,8 +25,11 @@ const TaskList = ({ listItems }) => {
   return (
     <div>
       <ul>
-        {currentItems.map((obj, index) => (
-          <li key={index}>{obj.title}</li>
+      {currentItems.map((obj, index) => (
+          <li key={index}>
+            {obj.title}
+            <button onClick={() => handleClick(startIndex + index)}>delete</button>
+          </li>
         ))}
       </ul>
       <div>
@@ -41,6 +46,6 @@ const TaskList = ({ listItems }) => {
       </div>
     </div>
   );
-};
+});
 
 export default TaskList;
