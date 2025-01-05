@@ -73,17 +73,17 @@ function App() {
   return (
     <>
       <div className="flex h-screen">
-        <aside className="w-1/4 h-[calc(100vh-2.5rem)] bg-black text-white flex flex-col items-center justify-start gap-4 pt-20 p-4 fixed top-20 rounded-tr-xl">
-          <h2>YOUR PROJECTS</h2>
+        <aside className="w-1/4 bg-black text-white pt-20 rounded-tr-xl mt-16">
+          <h2 className="text-xl font-bold mb-6 pl-4">YOUR PROJECTS</h2>
           <button
             onClick={handleAddNewProjectClick}
-            className="px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4 bg-stone-700 text-white hover:bg-stone-800 rounded-md transition-all duration-300"
+            className="bg-stone-800 text-stone-400 py-2 px-4 rounded mb-4 hover:bg-stone-700 ml-4"
           >
-            + ADD PROJECT
+            + Add Project
           </button>
           <ProjectList listItems={projects} ref={projectIndexRef} />
         </aside>
-        <div className="flex-1 flex flex-col items-center justify-center bg-gray-100 gap-4 p-4">
+        <div className="w-3/4 flex flex-col items-center justify-center bg-gray-100 gap-4 p-4">
           {editorState === "startingState" ? (
             <>
               <img
@@ -91,11 +91,11 @@ function App() {
                 alt="Notepad with a pen"
                 className="w-32 h-auto"
               />
-              <h2>No Project Selected</h2>
-              <p>Select a project or get started with a new one</p>
+              <h2 className="text-stone-600 text-xl font-bold">No Project Selected</h2>
+              <p className="text-stone-500">Select a project or get started with a new one</p>
               <button
                 onClick={handleEditorState}
-                className="px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4 bg-stone-500 text-white hover:bg-stone-700 rounded-md transition-all duration-300"
+                className="px-4 py-2 bg-stone-800 text-stone-400 font-semibold hover:bg-stone-500 rounded-md transition-all duration-300"
               >
                 Create new project
               </button>

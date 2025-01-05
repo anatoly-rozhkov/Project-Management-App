@@ -27,9 +27,9 @@ const ProjectList = forwardRef(function ProjectList(
 
   return (
     <div>
-      <ul>
+      <ul className="text-gray-400">
         {currentItems.map((obj, index) => (
-          <li key={index}>
+          <li key={index} className="py-2 cursor-pointer hover:text-white">
             <button onClick={() => handleClick(index)}>{obj.title}</button>
           </li>
         ))}

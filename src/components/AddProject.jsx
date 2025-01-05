@@ -17,21 +17,21 @@ const AddProject = forwardRef(function AddProject({ ...props }, ref) {
     <form
       ref={ref}
       onSubmit={handleSubmit}
-      className="w-full max-w-sm mx-auto p-6 bg-white rounded-lg shadow-lg"
+      className="px-10 rounded-lg bg-gray-100 w-full"
     >
-      <div className="mb-4">
-        <button
-          type="submit"
-          className="w-full bg-stone-500 text-white px-4 py-2 rounded-md hover:bg-stone-700 transition duration-300"
-        >
-          Save
-        </button>
+      <div className="mb-4 flex justify-end">
         <button
           id="discard-button"
           type="reset"
-          className="w-full bg-stone-500 text-white px-4 py-2 rounded-md hover:bg-stone-700 transition duration-300"
+          className="w-28 bg-gray-100 text-black px-4 py-2 rounded-md hover:bg-stone-300 transition duration-300"
         >
           Cancel
+        </button>
+        <button
+          type="submit"
+          className="w-28 bg-stone-900 text-white px-4 py-2 rounded-md hover:bg-stone-700 transition duration-300"
+        >
+          Save
         </button>
       </div>
       <div className="mb-4">
@@ -42,7 +42,8 @@ const AddProject = forwardRef(function AddProject({ ...props }, ref) {
           id="title"
           type="text"
           name="title"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"
+          className="w-full px-4 py-2 bg-stone-200 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
         ></input>
       </div>
       <div className="mb-4">
@@ -56,7 +57,9 @@ const AddProject = forwardRef(function AddProject({ ...props }, ref) {
           id="description"
           type="text"
           name="description"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"
+          className="w-full px-4 py-2 bg-stone-200 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          rows="4"
+          required
         ></input>
       </div>
       <div className="mb-4">
@@ -67,7 +70,7 @@ const AddProject = forwardRef(function AddProject({ ...props }, ref) {
           id="date"
           type="date"
           name="date"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"
+          className="w-full px-4 py-2 bg-stone-200 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"
         ></input>
       </div>
     </form>
