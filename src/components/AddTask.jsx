@@ -62,39 +62,52 @@ const AddTask = forwardRef(function AddTask(
     taskIndexRef.current = (taskIndex) => handleIndex(taskIndex, projectIndex);
   }, [projectIndex]);
 
+  const capitalizeTitle = (title) => {
+    return title.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", options);
+  };
+
   return (
-    <>
-      <div>
-        <h2>{project.title}</h2>
-        <p>{project.date}</p>
+    <div className="space-y-6">
+      <div className="w-[90%] mx-auto space-y-3">
+        <h2 className="text-4xl font-bold text-stone-700">
+          {capitalizeTitle(project.title)}
+        </h2>
+        <p className="text-stone-400">{formatDate(project.date)}</p>
         <p>{project.description}</p>
       </div>
-      <form ref={ref} onSubmit={handleSubmit}>
-        <div>
-          <button
-            type="submit"
-            className="w-full bg-stone-500 text-white px-4 py-2 rounded-md hover:bg-stone-700 transition duration-300"
-          >
-            Add Task
-          </button>
-        </div>
-        <div className="mb-4">
+      <div className="h-1 bg-stone-200 w-[90%] mx-auto"></div>
+      <form className="w-[90%] mx-auto" ref={ref} onSubmit={handleSubmit}>
+        <div className="space-y-3">
           <label
             htmlFor="title"
-            className="block text-gray-700 font-medium mb-2"
+            className="block text-gray-700 text-2xl font-bold"
           >
             Tasks
           </label>
-          <input
-            id="title"
-            type="text"
-            name="title"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"
-          ></input>
+          <div className="flex space-x-2">
+            <input
+              id="title"
+              type="text"
+              name="title"
+              className="w-80 px-4 py-2 bg-stone-200 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"
+            ></input>
+            <button 
+              className="px-4"
+              type="submit"
+            >
+              Add Task
+            </button>
+          </div>
         </div>
       </form>
       <TaskList listItems={project.tasks} ref={taskIndexRef} />
-    </>
+    </div>
   );
 });
 
