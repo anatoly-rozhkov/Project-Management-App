@@ -26,15 +26,15 @@ const ProjectList = forwardRef(function ProjectList(
   };
 
   return (
-    <div>
-      <ul className="text-gray-400">
+    <div className="py-2 px-4 mb-4 ml-1">
+      <ul className="text-gray-400 text-xl font-bold">
         {currentItems.map((obj, index) => (
           <li key={index} className="py-2 cursor-pointer hover:text-white">
             <button onClick={() => handleClick(index)}>{obj.title}</button>
           </li>
         ))}
       </ul>
-      <div>
+      <div className="flex justify-center space-x-2">
         {/* Pagination buttons */}
         {Array.from({ length: totalPages }, (_, i) => (
           <button

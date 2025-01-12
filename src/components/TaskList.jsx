@@ -23,11 +23,11 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
   };
 
   return (
-    <div className="bg-stone-100 bg-stone-200 w-[90%] mx-auto rounded-md">
+    <div className="bg-stone-100 bg-stone-200 w-[90%] mx-auto rounded-md space-y-4">
       <ul className="space-y-5">
         {currentItems.map((obj, index) => (
-          <div className="flex justify-between items-center px-4">
-            <li key={index} className="font-bold">
+          <div key={index} className="flex justify-between items-center px-4">
+            <li className="font-bold">
               {obj.title}
             </li>
             <button onClick={() => handleClick(startIndex + index)}>
@@ -36,13 +36,18 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
           </div>
         ))}
       </ul>
-      <div>
+      <div className="flex justify-center space-x-2">
         {/* Pagination buttons */}
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i + 1}
             onClick={() => goToPage(i + 1)}
             disabled={currentPage === i + 1}
+            className={`px-2 py-1 rounded ${
+              currentPage === i + 1
+                ? "bg-stone-500 text-black"
+                : "bg-stone-300 text-black hover:bg-stone-400"
+            }`}
           >
             {i + 1}
           </button>

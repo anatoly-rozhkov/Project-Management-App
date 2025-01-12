@@ -82,7 +82,13 @@ function App() {
         </button>
         <ProjectList listItems={projects} ref={projectIndexRef} />
       </aside>
-      <div className="w-3/4 flex flex-col items-center justify-start gap-4 p-4 overflow-y-auto h-full">
+      <div
+        className={`w-3/4 flex flex-col items-center ${
+          editorState === "taskCreationState"
+            ? "justify-start"
+            : "justify-center"
+        } gap-4 p-4 overflow-y-auto h-full`}
+      >
         {editorState === "startingState" ? (
           <>
             <img src={logo} alt="Notepad with a pen" className="w-32 h-auto" />
@@ -118,7 +124,7 @@ function App() {
           </div>
         ) : editorState === "taskCreationState" ? (
           <div className="w-full">
-            <div className="flex justify-end pr-28">
+            <div className="mx-auto flex justify-end w-[90%]">
               <button
                 onClick={() => handleProjectDeleteClick(projects.length - 1)}
               >
