@@ -23,13 +23,17 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
   };
 
   return (
-    <div>
-      <ul>
-      {currentItems.map((obj, index) => (
-          <li key={index}>
-            {obj.title}
-            <button onClick={() => handleClick(startIndex + index)}>Clear</button>
-          </li>
+    <div className="bg-stone-100 bg-stone-200 w-[90%] mx-auto rounded-md">
+      <ul className="space-y-5">
+        {currentItems.map((obj, index) => (
+          <div className="flex justify-between items-center px-4">
+            <li key={index} className="font-bold">
+              {obj.title}
+            </li>
+            <button onClick={() => handleClick(startIndex + index)}>
+              Clear
+            </button>
+          </div>
         ))}
       </ul>
       <div>

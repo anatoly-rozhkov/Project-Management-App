@@ -71,81 +71,71 @@ function App() {
   };
 
   return (
-    <>
-      <div className="flex h-screen w-full">
-        <aside className="w-1/4 bg-black text-white pt-20 rounded-tr-xl mt-16">
-          <h2 className="text-xl font-bold mb-6 pl-4">YOUR PROJECTS</h2>
-          <button
-            onClick={handleAddNewProjectClick}
-            className="bg-stone-800 text-stone-400 py-2 px-4 rounded mb-4 hover:bg-stone-700 ml-4"
-          >
-            + Add Project
-          </button>
-          <ProjectList listItems={projects} ref={projectIndexRef} />
-        </aside>
-        <div className="w-3/4 flex flex-col items-center justify-center bg-gray-100 gap-4 p-4">
-          {editorState === "startingState" ? (
-            <>
-              <img
-                src={logo}
-                alt="Notepad with a pen"
-                className="w-32 h-auto"
-              />
-              <h2 className="text-stone-600 text-xl font-bold">
-                No Project Selected
-              </h2>
-              <p className="text-stone-500">
-                Select a project or get started with a new one
-              </p>
-              <button
-                onClick={handleEditorState}
-                className="px-4 py-2 bg-stone-800 text-stone-400 font-semibold hover:bg-stone-500 rounded-md transition-all duration-300"
-              >
-                Create new project
+    <div className="flex h-screen w-full bg-gray-100">
+      <aside className="w-1/4 bg-black text-white pt-20 rounded-tr-xl mt-16">
+        <h2 className="text-xl font-bold mb-6 pl-4">YOUR PROJECTS</h2>
+        <button
+          onClick={handleAddNewProjectClick}
+          className="bg-stone-800 text-stone-400 py-2 px-4 rounded mb-4 hover:bg-stone-700 ml-4"
+        >
+          + Add Project
+        </button>
+        <ProjectList listItems={projects} ref={projectIndexRef} />
+      </aside>
+      <div className="w-3/4 flex flex-col items-center justify-start gap-4 p-4 overflow-y-auto h-full">
+        {editorState === "startingState" ? (
+          <>
+            <img src={logo} alt="Notepad with a pen" className="w-32 h-auto" />
+            <h2 className="text-stone-600 text-xl font-bold">
+              No Project Selected
+            </h2>
+            <p className="text-stone-500">
+              Select a project or get started with a new one
+            </p>
+            <button
+              onClick={handleEditorState}
+              className="px-4 py-2 bg-stone-800 text-stone-400 font-semibold hover:bg-stone-500 rounded-md transition-all duration-300"
+            >
+              Create new project
+            </button>
+          </>
+        ) : editorState === "projectCreationState" ? (
+          <AddProject ref={createProejectRef} onSubmit={handleProjectSubmit} />
+        ) : editorState === "secondaryProjectCreationState" ? (
+          <div className="w-full">
+            <div className="flex justify-end pr-28">
+              <button onClick={() => handleProjectDeleteClick(currentIndex)}>
+                Delete
               </button>
-            </>
-          ) : editorState === "projectCreationState" ? (
-            <AddProject
-              ref={createProejectRef}
-              onSubmit={handleProjectSubmit}
+            </div>
+            <AddTask
+              ref={createTaskRef}
+              projects={projects}
+              setProjects={setProjects}
+              projectIndex={currentIndex}
+              onSubmit={handleTaskSubmit}
             />
-          ) : editorState === "secondaryProjectCreationState" ? (
-            // TODO add delete project button here, so that I wouldn't have to mess with imperative handles
-            <div className="w-full">
-              <div className="flex justify-end pr-28">
-                <button onClick={() => handleProjectDeleteClick(currentIndex)}>
-                  Delete
-                </button>
-              </div>
-              <AddTask
-                ref={createTaskRef}
-                projects={projects}
-                setProjects={setProjects}
-                projectIndex={currentIndex}
-                onSubmit={handleTaskSubmit}
-              />
+          </div>
+        ) : editorState === "taskCreationState" ? (
+          <div className="w-full">
+            <div className="flex justify-end pr-28">
+              <button
+                onClick={() => handleProjectDeleteClick(projects.length - 1)}
+              >
+                Delete
+              </button>
             </div>
-          ) : editorState === "taskCreationState" ? (
-            <div className="w-full">
-              <div className="flex justify-end pr-28">
-                <button
-                  onClick={() => handleProjectDeleteClick(projects.length - 1)}
-                >
-                  Delete
-                </button>
-              </div>
-              <AddTask
-                ref={createTaskRef}
-                projects={projects}
-                setProjects={setProjects}
-                projectIndex={projects.length - 1}
-                onSubmit={handleTaskSubmit}
-              />
-            </div>
-          ) : null}
-        </div>
+            <AddTask
+              ref={createTaskRef}
+              projects={projects}
+              setProjects={setProjects}
+              projectIndex={projects.length - 1}
+              onSubmit={handleTaskSubmit}
+            />
+          </div>
+        ) : null}
       </div>
-    </>
+    </div>
   );
 }
 
