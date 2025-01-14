@@ -97,10 +97,7 @@ const AddTask = forwardRef(function AddTask(
               name="title"
               className="w-80 px-4 py-2 bg-stone-200 rounded-md focus:outline-none focus:ring-2 focus:ring-stone-500"
             ></input>
-            <button 
-              className="px-4"
-              type="submit"
-            >
+            <button className="px-4" type="submit">
               Add Task
             </button>
           </div>

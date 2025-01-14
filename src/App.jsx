@@ -45,7 +45,7 @@ function App() {
   }
 
   const handleProjectSubmit = (project_data) => {
-    setProjects((projects) => [...projects, project_data]);
+    setProjects((projects) => [project_data, ...projects]);
     setEditorState("taskCreationState");
   };
 
@@ -62,7 +62,7 @@ function App() {
       // Update the tasks array for the specific project
       updatedProjects[projectIndex] = {
         ...updatedProjects[projectIndex],
-        tasks: [...updatedProjects[projectIndex].tasks, task_data],
+        tasks: [task_data, ...updatedProjects[projectIndex].tasks],
       };
 
       return updatedProjects;
