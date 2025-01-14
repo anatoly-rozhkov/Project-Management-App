@@ -20,6 +20,7 @@ const ProjectList = forwardRef(function ProjectList(
 
   // Calculate total pages
   const totalPages = Math.ceil(listItems.length / itemsPerPage);
+  const placeholders = itemsPerPage - currentItems.length;
 
   const goToPage = (page) => {
     setCurrentPage(page);
@@ -27,10 +28,15 @@ const ProjectList = forwardRef(function ProjectList(
 
   return (
     <div className="py-2 px-4 mb-4 ml-1">
-      <ul className="text-gray-400 text-xl font-bold">
+      <ul className="text-gray-400 text-xl text-white">
         {currentItems.map((obj, index) => (
           <li key={index} className="py-2 cursor-pointer hover:text-white">
             <button onClick={() => handleClick(index)}>{obj.title}</button>
+          </li>
+        ))}
+        {Array.from({ length: placeholders }).map((_, index) => (
+          <li key={`placeholder-${index}`} className="py-2 cursor-default">
+            &nbsp;
           </li>
         ))}
       </ul>

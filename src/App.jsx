@@ -72,7 +72,7 @@ function App() {
 
   return (
     <div className="flex h-screen w-full bg-gray-100">
-      <aside className="w-1/4 bg-black text-white pt-20 rounded-tr-xl mt-16">
+      <aside className="w-1/4 bg-black text-white pt-16 rounded-tr-xl mt-14">
         <h2 className="text-xl font-bold mb-6 pl-4">YOUR PROJECTS</h2>
         <button
           onClick={handleAddNewProjectClick}
