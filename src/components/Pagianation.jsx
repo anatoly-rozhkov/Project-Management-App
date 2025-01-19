@@ -6,10 +6,8 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
 
     // Always show the first page
     if (currentPage > 2) {
-      console.log('Add first page:', currentPage)
       pageNumbers.push(1);
       if (currentPage > 3) {
-        console.log('Add ... between current and first page:', currentPage)
         pageNumbers.push("...");
       }
     }
@@ -21,10 +19,6 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
       i++
     ) {
       if (!pageNumbers.includes(i)) {
-        console.log(
-          "Show 1 page before, current, and 1 page after:",
-          currentPage
-        );
         pageNumbers.push(i);
       }
     }
@@ -34,11 +28,9 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
       if (currentPage < totalPages - 1 && currentPage + 1 !== totalPages - 1) {
         pageNumbers.push("...");
       }
-      console.log('Always show the last page:', currentPage)
       pageNumbers.push(totalPages);
     }
 
-    console.log(pageNumbers);
     return pageNumbers;
   };
 
@@ -56,6 +48,7 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
       </button>
 
       {/* Page numbers */}
+      <div className="w-[36%] justify-center flex space-x-2">
       {pageNumbers.map((page, index) =>
         page === "..." ? (
           <span key={page + index} className="px-2 py-1 text-black">
@@ -76,6 +69,7 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
           </button>
         )
       )}
+      </div>
 
       {/* Next button */}
       <button
