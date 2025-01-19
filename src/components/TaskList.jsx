@@ -1,4 +1,5 @@
 import React, { forwardRef, useState } from "react";
+import Pagination from "./Pagianation";
 
 const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,6 +21,7 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
   const placeholders = itemsPerPage - currentItems.length;
 
   const goToPage = (page) => {
+    console.log(page);
     setCurrentPage(page);
   };
 
@@ -40,8 +42,13 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
           </div>
         ))}
       </ul>
-      <div className="flex justify-center space-x-2">
-        {/* Pagination buttons */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        goToPage={goToPage}
+      />
+      {/* <div className="flex justify-center space-x-2">
+        Pagination buttons
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i + 1}
@@ -56,7 +63,7 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
             {i + 1}
           </button>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 });
