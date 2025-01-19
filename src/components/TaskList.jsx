@@ -46,24 +46,8 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
         currentPage={currentPage}
         totalPages={totalPages}
         goToPage={goToPage}
+        fullLength={true}
       />
-      {/* <div className="flex justify-center space-x-2">
-        Pagination buttons
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => goToPage(i + 1)}
-            disabled={currentPage === i + 1}
-            className={`px-2 py-1 rounded ${
-              currentPage === i + 1
-                ? "bg-stone-500 text-black"
-                : "bg-stone-300 text-black hover:bg-stone-400"
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div> */}
     </div>
   );
 });

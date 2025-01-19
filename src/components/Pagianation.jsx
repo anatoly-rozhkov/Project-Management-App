@@ -1,14 +1,16 @@
 import React from "react";
 
-const Pagination = ({ currentPage, totalPages, goToPage }) => {
+const Pagination = ({ currentPage, totalPages, goToPage, fullLength }) => {
   const getPageNumbers = () => {
     const pageNumbers = [];
 
     // Always show the first page
-    if (currentPage > 2) {
-      pageNumbers.push(1);
-      if (currentPage > 3) {
-        pageNumbers.push("...");
+    if (fullLength) {
+      if (currentPage > 2) {
+        pageNumbers.push(1);
+        if (currentPage > 3) {
+          pageNumbers.push("...");
+        }
       }
     }
 
@@ -24,14 +26,19 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
     }
 
     // Always show the last page
-    if (currentPage < totalPages - 1) {
-      if (currentPage < totalPages - 1 && currentPage + 1 !== totalPages - 1) {
-        pageNumbers.push("...");
+    if (fullLength) {
+      if (currentPage < totalPages - 1) {
+        if (
+          currentPage < totalPages - 1 &&
+          currentPage + 1 !== totalPages - 1
+        ) {
+          pageNumbers.push("...");
+        }
+        pageNumbers.push(totalPages);
       }
-      pageNumbers.push(totalPages);
     }
 
-    return pageNumbers;
+      return pageNumbers;
   };
 
   const pageNumbers = getPageNumbers();
@@ -48,27 +55,33 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
       </button>
 
       {/* Page numbers */}
-      <div className="w-[36%] justify-center flex space-x-2">
-      {pageNumbers.map((page, index) =>
-        page === "..." ? (
-          <span key={page + index} className="px-2 py-1 text-black">
-            ...
-          </span>
-        ) : (
-          <button
-            key={page}
-            onClick={() => goToPage(page)}
-            disabled={currentPage === page}
-            className={`px-2 py-1 rounded ${
-              currentPage === page
-                ? "bg-stone-500 text-white"
-                : "bg-stone-300 text-black hover:bg-stone-400"
-            }`}
-          >
-            {page}
-          </button>
-        )
-      )}
+      {/* Figure out why the fuck width behaves strangely at 40% -> 41
+          Fix issue that when you delete enough tasks for the pagination to shed a page, you end up on an empty page
+          and have to click on another page manually
+          Add highlight of the current page
+      */}
+
+      <div className={`w-[${fullLength ? "36" : "41"}%] justify-center flex space-x-2`}>
+        { .map((page, index) =>
+          page === "..." ? (
+            <span key={page + index} className="px-2 py-1 text-black">
+              ...
+            </span>
+          ) : (
+            <button
+              key={page}
+              onClick={() => goToPage(page)}
+              disabled={currentPage === page}
+              className={`px-2 py-1 rounded ${
+                currentPage === page
+                  ? "bg-stone-500 text-white"
+                  : "bg-stone-300 text-black hover:bg-stone-400"
+              }`}
+            >
+              {page}
+            </button>
+          )
+        )}
       </div>
 
       {/* Next button */}
