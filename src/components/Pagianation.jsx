@@ -5,14 +5,14 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
     const pageNumbers = [];
 
     // Always show the first page
-    // if (currentPage > 2) {
-    //   console.log('Always show the first page >2:', currentPage)
-    //   pageNumbers.push(1);
-    //   if (currentPage > 3) {
-    //     console.log('Always show the first page >3:', currentPage)
-    //     pageNumbers.push("...");
-    //   }
-    // }
+    if (currentPage > 2) {
+      console.log('Add first page:', currentPage)
+      pageNumbers.push(1);
+      if (currentPage > 3) {
+        console.log('Add ... between current and first page:', currentPage)
+        pageNumbers.push("...");
+      }
+    }
 
     // Show 1 page before, current, and 1 page after
     for (
@@ -30,13 +30,13 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
     }
 
     // Always show the last page
-    // if (currentPage < totalPages - 2) {
-    //   if (currentPage < totalPages - 3 && currentPage + 2 !== totalPages - 1) {
-    //     pageNumbers.push("...");
-    //   }
-    //   console.log('Always show the last page:', currentPage)
-    //   pageNumbers.push(totalPages);
-    // }
+    if (currentPage < totalPages - 1) {
+      if (currentPage < totalPages - 1 && currentPage + 1 !== totalPages - 1) {
+        pageNumbers.push("...");
+      }
+      console.log('Always show the last page:', currentPage)
+      pageNumbers.push(totalPages);
+    }
 
     console.log(pageNumbers);
     return pageNumbers;
@@ -58,7 +58,7 @@ const Pagination = ({ currentPage, totalPages, goToPage }) => {
       {/* Page numbers */}
       {pageNumbers.map((page, index) =>
         page === "..." ? (
-          <span key={index} className="px-2 py-1 text-black">
+          <span key={page + index} className="px-2 py-1 text-black">
             ...
           </span>
         ) : (
