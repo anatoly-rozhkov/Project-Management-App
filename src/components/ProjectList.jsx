@@ -41,24 +41,14 @@ const ProjectList = forwardRef(function ProjectList(
           </li>
         ))}
       </ul>
+      { totalPages > 1 ? (
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         goToPage={goToPage}
         fullLength={false}
-      />
-      {/* <div className="flex justify-center space-x-2"> */}
-        {/* Pagination buttons */}
-        {/* {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => goToPage(i + 1)}
-            disabled={currentPage === i + 1}
-          >
-            {i + 1}
-          </button>
-        ))} */}
-      {/* </div> */}
+      />) : null
+      }
     </div>
   );
 });

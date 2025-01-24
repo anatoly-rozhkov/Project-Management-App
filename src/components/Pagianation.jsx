@@ -38,7 +38,7 @@ const Pagination = ({ currentPage, totalPages, goToPage, fullLength }) => {
       }
     }
 
-      return pageNumbers;
+    return pageNumbers;
   };
 
   const pageNumbers = getPageNumbers();
@@ -61,8 +61,12 @@ const Pagination = ({ currentPage, totalPages, goToPage, fullLength }) => {
           Add highlight of the current page
       */}
 
-      <div className={`w-[${fullLength ? "36" : "41"}%] justify-center flex space-x-2`}>
-        { .map((page, index) =>
+      <div
+        className={`justify-center flex space-x-2 ${
+          fullLength ? "w-[37%]" : "w-[40%]"
+        }`}
+      >
+        {pageNumbers.map((page, index) =>
           page === "..." ? (
             <span key={page + index} className="px-2 py-1 text-black">
               ...
