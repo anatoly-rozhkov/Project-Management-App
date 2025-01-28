@@ -47,6 +47,8 @@ function App() {
   const handleProjectSubmit = (project_data) => {
     setProjects((projects) => [project_data, ...projects]);
     setEditorState("taskCreationState");
+    console.log(projects.length);
+    setCurrentIndex(projects.length);
   };
 
   const handleTaskSubmit = (task_data, projectIndex) => {
@@ -80,7 +82,11 @@ function App() {
         >
           + Add Project
         </button>
-        <ProjectList listItems={projects} ref={projectIndexRef} />
+        <ProjectList
+          listItems={projects}
+          currentProject={currentIndex}
+          ref={projectIndexRef}
+        />
       </aside>
       <div
         className={`w-3/4 flex flex-col items-center ${
