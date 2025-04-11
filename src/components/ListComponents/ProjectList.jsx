@@ -1,17 +1,16 @@
-import { forwardRef, useState } from "react";
+import { useState } from "react";
 import Pagination from "./Pagianation";
+import useListMethod from "../methods/ListMethod";
 
-const ProjectList = forwardRef(function ProjectList(
-  { listItems, currentProject, ...props },
-  ref
-) {
+function ProjectList({ currentProject, onProjectClick, ...props }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(null);
-  const itemsPerPage = 9;
+  const itemsPerPage = 4;
 
-  const handleClick = (index) => {
-    // setCurrentProjectIndex(index);
-    ref.current(index);
+  // TODO figure out how to fire this efficiently 
+  const projects = useListMethod("http://127.0.0.1:8000/api/projects/");
+
+  const handleClick = (clickedProject) => {
+    onProjectClick(clickedProject);
   };
 
   // Calculate start and end indices
@@ -19,10 +18,10 @@ const ProjectList = forwardRef(function ProjectList(
   const endIndex = startIndex + itemsPerPage;
 
   // Get current page's items
-  const currentItems = listItems.slice(startIndex, endIndex);
+  const currentItems = projects.slice(startIndex, endIndex);
 
   // Calculate total pages
-  const totalPages = Math.ceil(listItems.length / itemsPerPage);
+  const totalPages = Math.ceil(projects.length / itemsPerPage);
   const placeholders = itemsPerPage - currentItems.length;
 
   const goToPage = (page) => {
@@ -32,15 +31,15 @@ const ProjectList = forwardRef(function ProjectList(
   return (
     <div className="py-2 px-4 mb-4 ml-1">
       <ul className="text-gray-400 text-xl text-white">
-        {currentItems.map((obj, index) => (
+        {projects.map((obj, index) => (
           <li
-            key={index}
+            key={obj.id}
             className={`py-2 cursor-pointer hover:text-white ${
               index === currentProject ? "bg-stone-800" : "bg-black"
             }`}
-            onClick={() => handleClick(index)}
+            onClick={() => handleClick(obj)}
           >
-            {obj.title}
+            {obj.name}
           </li>
         ))}
         {Array.from({ length: placeholders }).map((_, index) => (
@@ -59,6 +58,6 @@ const ProjectList = forwardRef(function ProjectList(
       ) : null}
     </div>
   );
-});
+};
 
 export default ProjectList;

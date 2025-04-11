@@ -1,9 +1,12 @@
 import React, { forwardRef, useState } from "react";
 import Pagination from "./Pagianation";
+import useListMethod from "../methods/ListMethod";
 
-const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
+const TaskList = forwardRef(function TaskList({ projectId, ...props }, ref) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+
+  const listItems = useListMethod(`http://127.0.0.1:8000/api/projects/${projectId}/get-tasks/`);
 
   const handleClick = (index) => {
     ref.current(index);
@@ -29,8 +32,8 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
     <div className="bg-stone-100 bg-stone-200 w-[90%] mx-auto rounded-md space-y-4 pt-4 pb-4">
       <ul className="space-y-5">
         {currentItems.map((obj, index) => (
-          <div key={index} className="flex justify-between items-center px-4">
-            <li className="font-bold">{obj.title}</li>
+          <div key={obj.id} className="flex justify-between items-center px-4">
+            <li className="font-bold">{obj.name}</li>
             <button onClick={() => handleClick(startIndex + index)}>
               Clear
             </button>

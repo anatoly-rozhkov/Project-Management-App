@@ -1,15 +1,23 @@
+import PostPethod from "./methods/PostMethod";
 import { forwardRef } from "react";
 
 const AddProject = forwardRef(function AddProject({ ...props }, ref) {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (props.onSubmit) {
       const formData = new FormData(ref.current);
       const dataObject = Object.fromEntries(formData.entries());
-      dataObject.tasks = [];
+      const newProject = await PostPethod(
+        "http://127.0.0.1:8000/api/projects/",
+        {
+          name: dataObject.title,
+          description: dataObject.description,
+          due_date: dataObject.date,
+        }
+      );
 
-      props.onSubmit(dataObject);
+      props.onSubmit(newProject.id);
     }
   };
 
