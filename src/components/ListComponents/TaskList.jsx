@@ -1,13 +1,14 @@
-import React, { forwardRef, useState } from "react";
+import React, { useState } from "react";
 import Pagination from "./Pagianation";
-import useListMethod from "../methods/ListMethod";
+import deleteItem from "../methods/DeleteMethod";
 
-const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
+function TaskList({ listItems, taskStatus, setTaskStatus, ...props }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const handleClick = (index) => {
-    ref.current(index);
+  async function handleClick(taskIndex) {
+    await deleteItem(listItems[taskIndex].id)
+    setTaskStatus((taskStatus) => taskStatus + 1);
   };
 
   // Calculate start and end indices
@@ -50,6 +51,6 @@ const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
       />
     </div>
   );
-});
+};
 
 export default TaskList;

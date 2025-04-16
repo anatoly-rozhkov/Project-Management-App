@@ -15,7 +15,7 @@ function AddTask({ projectId, onSubmit, ...props }) {
       .get(`http://127.0.0.1:8000/api/projects/${projectId}/get-tasks/`)
       .then((response) => setTasks(response.data["results"]))
       .catch((error) => console.error(error));
-  }, [taskStatus]);
+  }, [taskStatus, projectId]);
 
   useEffect(() => {
     axios
@@ -131,7 +131,7 @@ function AddTask({ projectId, onSubmit, ...props }) {
             </div>
           </div>
         </form>
-        <TaskList listItems={tasks} />
+        <TaskList listItems={tasks} taskStatus={taskStatus} setTaskStatus={setTaskStatus}/>
       </div>
     );
   }
