@@ -2,11 +2,9 @@ import React, { forwardRef, useState } from "react";
 import Pagination from "./Pagianation";
 import useListMethod from "../methods/ListMethod";
 
-const TaskList = forwardRef(function TaskList({ projectId, ...props }, ref) {
+const TaskList = forwardRef(function TaskList({ listItems, ...props }, ref) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
-  const listItems = useListMethod(`http://127.0.0.1:8000/api/projects/${projectId}/get-tasks/`);
 
   const handleClick = (index) => {
     ref.current(index);
@@ -24,7 +22,6 @@ const TaskList = forwardRef(function TaskList({ projectId, ...props }, ref) {
   const placeholders = itemsPerPage - currentItems.length;
 
   const goToPage = (page) => {
-    console.log(page);
     setCurrentPage(page);
   };
 

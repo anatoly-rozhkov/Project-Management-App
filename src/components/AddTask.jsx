@@ -1,15 +1,28 @@
 import React from "react";
 import TaskList from "./ListComponents/TaskList";
 import PostPethod from "./methods/PostMethod";
-import useRetreiveMethod from "./methods/RetrieveMethod";
 import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
 
 function AddTask({ projectId, onSubmit, ...props }) {
   const [currentProject, setCurrentProject] = React.useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [taskStatus, setTaskStatus] = useState(0);
 
-  const project = useRetreiveMethod(
-    `http://127.0.0.1:8000/api/projects/${projectId}/`
-  );
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/api/projects/${projectId}/get-tasks/`)
+      .then((response) => setTasks(response.data["results"]))
+      .catch((error) => console.error(error));
+  }, [taskStatus]);
+
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/api/projects/${projectId}/`)
+      .then((response) => setCurrentProject(response.data))
+      .catch((error) => console.error(error));
+  }, [projectId]);
 
   const submitTask = async (event) => {
     event.preventDefault();
@@ -17,17 +30,12 @@ function AddTask({ projectId, onSubmit, ...props }) {
     const title = event.target.elements.title.value;
     await PostPethod("http://127.0.0.1:8000/api/tasks/", {
       name: title,
-      project: project.id,
+      project: projectId,
     });
 
     event.target.reset();
+    setTaskStatus((taskStatus) => taskStatus + 1);
   };
-
-  useEffect(() => {
-    if (project) {
-      setCurrentProject(project);
-    }
-  }, [project]);
 
   // console.log("{project} this is retrieved project".replace("{project}", project))
   // console.log("{error} if any error".replace("{error}", error))
@@ -123,7 +131,7 @@ function AddTask({ projectId, onSubmit, ...props }) {
             </div>
           </div>
         </form>
-        <TaskList projectId={project.id} />
+        <TaskList listItems={tasks} />
       </div>
     );
   }
