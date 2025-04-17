@@ -3,13 +3,13 @@ import React from "react";
 import AddProject from "./components/AddProject";
 import AddTask from "./components/AddTask";
 import ProjectList from "./components/ListComponents/ProjectList";
-// import useFetchProjects from "./components/ListMethod";
+import deleteItem from "./components/methods/DeleteMethod";
 
 function App() {
   const [editorState, setEditorState] = React.useState("startingState");
   const createProejectRef = React.useRef();
   // const createTaskRef = React.useRef();
-  // const [projects, setProjects] = React.useState([]);
+  const [projects, setProjects] = React.useState([]);
   const [currentProject, setCurrentProject] = React.useState(null);
 
   const handleIndex = (index) => {
@@ -22,22 +22,25 @@ function App() {
     setEditorState("projectCreationState");
   }
 
-  // function handleProjectDeleteClick(deleteProejctIndex) {
-  //   setEditorState("startingState");
-  //   setProjects((prevProjects) => {
-  //     if (deleteProejctIndex < 0 || deleteProejctIndex >= prevProjects.length) {
-  //       console.error("Invalid project index:", deleteProejctIndex);
-  //       return prevProjects;
-  //     }
+  async function handleProjectDeleteClick(projectId) {
+    setEditorState("startingState");
+    await deleteItem(`http://127.0.0.1:8000/api/projects/${projectId}/`);
+    setCurrentProject(null);
 
-  //     const updatedProjects = [
-  //       ...prevProjects.slice(0, deleteProejctIndex),
-  //       ...prevProjects.slice(deleteProejctIndex + 1),
-  //     ];
+    // setProjects((prevProjects) => {
+    //   if (deleteProejctIndex < 0 || deleteProejctIndex >= prevProjects.length) {
+    //     console.error("Invalid project index:", deleteProejctIndex);
+    //     return prevProjects;
+    //   }
 
-  //     return updatedProjects;
-  //   });
-  // }
+    //   const updatedProjects = [
+    //     ...prevProjects.slice(0, deleteProejctIndex),
+    //     ...prevProjects.slice(deleteProejctIndex + 1),
+    //   ];
+
+    //   return updatedProjects;
+    // });
+  }
 
   function handleEditorState() {
     if (editorState === "startingState") {
@@ -49,33 +52,26 @@ function App() {
 
   const handleProjectSubmit = (selectedProject) => {
     // Set current project, open task editor
-    setEditorState("taskCreationState");
     setCurrentProject(selectedProject);
-
-    // console.log("Previous project:", currentProject); // Logs previous state
-    // console.log("New project:", selectedProject);
-    // console.log("Current state:", editorState)
+    setEditorState("taskCreationState");
   };
 
   const handleTaskSubmit = (projectId) => {
     // setProjects((prevProjects) => {
-  //   //   if (projectIndex < 0 || projectIndex >= prevProjects.length) {
-  //   //     console.error("Invalid project index:", projectIndex);
-  //   //     return prevProjects;
-  //   //   }
-
-  //     // Create a copy of the projects array
-  //     const updatedProjects = [...prevProjects];
-
-  //     // Update the tasks array for the specific project
-  //     updatedProjects[projectIndex] = {
-  //       ...updatedProjects[projectIndex],
-  //       tasks: [task_data, ...updatedProjects[projectIndex].tasks],
-  //     };
-
-  //     return updatedProjects;
-  //   });
-  //   createTaskRef.current.querySelector("#title").value = "";
+    //   //   if (projectIndex < 0 || projectIndex >= prevProjects.length) {
+    //   //     console.error("Invalid project index:", projectIndex);
+    //   //     return prevProjects;
+    //   //   }
+    //     // Create a copy of the projects array
+    //     const updatedProjects = [...prevProjects];
+    //     // Update the tasks array for the specific project
+    //     updatedProjects[projectIndex] = {
+    //       ...updatedProjects[projectIndex],
+    //       tasks: [task_data, ...updatedProjects[projectIndex].tasks],
+    //     };
+    //     return updatedProjects;
+    //   });
+    //   createTaskRef.current.querySelector("#title").value = "";
   };
 
   return (
@@ -89,8 +85,10 @@ function App() {
           + Add Project
         </button>
         <ProjectList
-          currentProject={currentProject} // Pass selected project if any
-          onProjectClick={handleProjectSubmit} // call back to child
+          currentProject={currentProject}
+          onProjectClick={handleProjectSubmit}
+          projects={projects}
+          setProjects={setProjects}
         />
       </aside>
       <div
@@ -121,7 +119,9 @@ function App() {
         ) : editorState === "secondaryProjectCreationState" ? (
           <div className="w-full">
             <div className="flex justify-end pr-28">
-              <button onClick={() => handleProjectDeleteClick(currentProject)}>
+              <button
+                onClick={() => handleProjectDeleteClick(currentProject["id"])}
+              >
                 Delete
               </button>
             </div>
@@ -135,13 +135,13 @@ function App() {
           <div className="w-full">
             <div className="mx-auto flex justify-end w-[90%]">
               <button
-                onClick={() => handleProjectDeleteClick(currentProject.id)}
+                onClick={() => handleProjectDeleteClick(currentProject["id"])}
               >
                 Delete
               </button>
             </div>
             <AddTask
-              projectId={currentProject.id}
+              projectId={currentProject["id"]}
               onSubmit={handleTaskSubmit}
               // ref={createTaskRef}
             />

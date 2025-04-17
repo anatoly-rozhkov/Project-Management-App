@@ -7,7 +7,7 @@ function TaskList({ listItems, taskStatus, setTaskStatus, ...props }) {
   const itemsPerPage = 5;
 
   async function handleClick(taskIndex) {
-    await deleteItem(listItems[taskIndex].id)
+    await deleteItem(`http://127.0.0.1:8000/api/tasks/${listItems[taskIndex].id}/`)
     setTaskStatus((taskStatus) => taskStatus + 1);
   };
 

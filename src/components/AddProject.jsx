@@ -17,7 +17,7 @@ const AddProject = forwardRef(function AddProject({ ...props }, ref) {
         }
       );
 
-      props.onSubmit(newProject.id);
+      props.onSubmit(newProject);
     }
   };
 

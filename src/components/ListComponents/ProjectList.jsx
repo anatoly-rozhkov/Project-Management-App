@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Pagination from "./Pagianation";
-import useListMethod from "../methods/ListMethod";
+import axios from "axios";
 
-function ProjectList({ currentProject, onProjectClick, ...props }) {
+function ProjectList({ currentProject, onProjectClick, projects, setProjects, ...props }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  // TODO figure out how to fire this efficiently 
-  const projects = useListMethod("http://127.0.0.1:8000/api/projects/");
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/projects/")
+      .then((response) => setProjects(response.data["results"]))
+      .catch((error) => console.error(error));
+  }, [currentProject]);
 
   const handleClick = (clickedProject) => {
     onProjectClick(clickedProject);
