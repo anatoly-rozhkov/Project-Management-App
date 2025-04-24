@@ -125,11 +125,6 @@ function App() {
                 Delete
               </button>
             </div>
-            {/* <AddTask
-              projectId={currentProject.id}
-              onSubmit={handleTaskSubmit}
-              // ref={createTaskRef}
-            /> */}
           </div>
         ) : editorState === "taskCreationState" ? (
           <div className="w-full">

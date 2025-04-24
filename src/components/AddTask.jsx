@@ -6,16 +6,26 @@ import { useState } from "react";
 import axios from "axios";
 
 function AddTask({ projectId, onSubmit, ...props }) {
+  const limit = 7;
+
   const [currentProject, setCurrentProject] = React.useState(null);
   const [tasks, setTasks] = useState([]);
   const [taskStatus, setTaskStatus] = useState(0);
 
+  const [listData, setListData] = useState({});
+  const [endpoint, setEndpoint] = useState(
+    `http://127.0.0.1:8000/api/tasks/?project=${projectId}&limit=${limit}&offset=0`
+  );
+
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/projects/${projectId}/get-tasks/`)
-      .then((response) => setTasks(response.data["results"]))
+      .get(endpoint)
+      .then((response) => {
+        setTasks(response.data["results"]);
+        setListData(response.data);
+      })
       .catch((error) => console.error(error));
-  }, [taskStatus, projectId]);
+  }, [taskStatus, projectId, endpoint]);
 
   useEffect(() => {
     axios
@@ -131,7 +141,14 @@ function AddTask({ projectId, onSubmit, ...props }) {
             </div>
           </div>
         </form>
-        <TaskList listItems={tasks} taskStatus={taskStatus} setTaskStatus={setTaskStatus}/>
+        <TaskList
+          listData={listData}
+          setEndpoint={setEndpoint}
+          tasks={tasks}
+          taskStatus={taskStatus}
+          setTaskStatus={setTaskStatus}
+          limit={limit}
+        />
       </div>
     );
   }

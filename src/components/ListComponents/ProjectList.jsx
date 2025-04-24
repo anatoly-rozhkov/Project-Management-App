@@ -1,32 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Pagination from "./Pagianation";
 import axios from "axios";
 
 function ProjectList({ currentProject, onProjectClick, projects, setProjects, ...props }) {
+  const limit = 9;
+  
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const [listData, setListData] = useState({});
+  const [endpoint, setEndpoint] = useState(`http://127.0.0.1:8000/api/projects/?limit=${limit}&offset=0`);
+
+  // Finish pagination with new refs
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/projects/")
-      .then((response) => setProjects(response.data["results"]))
+      .get(endpoint)
+      .then((response) => {
+        setProjects(response.data["results"]);
+        setListData(response.data);
+      })
       .catch((error) => console.error(error));
-  }, [currentProject]);
+  }, [currentProject, endpoint]);
 
   const handleClick = (clickedProject) => {
     onProjectClick(clickedProject);
   };
 
-  // Calculate start and end indices
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  // Get current page's items
-  const currentItems = projects.slice(startIndex, endIndex);
-
-  // Calculate total pages
-  const totalPages = Math.ceil(projects.length / itemsPerPage);
-  const placeholders = itemsPerPage - currentItems.length;
+  // Calculate placeholders
+  const placeholders = limit - projects;
 
   const goToPage = (page) => {
     setCurrentPage(page);
@@ -52,11 +52,13 @@ function ProjectList({ currentProject, onProjectClick, projects, setProjects, ..
           </li>
         ))}
       </ul>
-      {totalPages > 1 ? (
+      {listData.count > 1 ? (
         <Pagination
+          listData={listData}
+          setEndpoint={setEndpoint}
           currentPage={currentPage}
-          totalPages={totalPages}
-          goToPage={goToPage}
+          setCurrentPage={setCurrentPage}
+          limit={limit}
           fullLength={false}
         />
       ) : null}

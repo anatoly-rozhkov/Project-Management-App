@@ -2,25 +2,16 @@ import React, { useState } from "react";
 import Pagination from "./Pagianation";
 import deleteItem from "../methods/DeleteMethod";
 
-function TaskList({ listItems, taskStatus, setTaskStatus, ...props }) {
+function TaskList({ listData, setEndpoint, tasks, taskStatus, setTaskStatus, limit, ...props }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
 
   async function handleClick(taskIndex) {
-    await deleteItem(`http://127.0.0.1:8000/api/tasks/${listItems[taskIndex].id}/`)
+    await deleteItem(`http://127.0.0.1:8000/api/tasks/${tasks[taskIndex].id}/`)
     setTaskStatus((taskStatus) => taskStatus + 1);
   };
 
-  // Calculate start and end indices
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  // Get current page's items
-  const currentItems = listItems.slice(startIndex, endIndex);
-
-  // Calculate total pages
-  const totalPages = Math.ceil(listItems.length / itemsPerPage);
-  const placeholders = itemsPerPage - currentItems.length;
+    // Calculate placeholders
+  const placeholders = limit - tasks;
 
   const goToPage = (page) => {
     setCurrentPage(page);
@@ -29,10 +20,10 @@ function TaskList({ listItems, taskStatus, setTaskStatus, ...props }) {
   return (
     <div className="bg-stone-100 bg-stone-200 w-[90%] mx-auto rounded-md space-y-4 pt-4 pb-4">
       <ul className="space-y-5">
-        {currentItems.map((obj, index) => (
+        {tasks.map((obj, index) => (
           <div key={obj.id} className="flex justify-between items-center px-4">
             <li className="font-bold">{obj.name}</li>
-            <button onClick={() => handleClick(startIndex + index)}>
+            <button onClick={() => handleClick(obj)}>
               Clear
             </button>
           </div>
@@ -44,11 +35,12 @@ function TaskList({ listItems, taskStatus, setTaskStatus, ...props }) {
         ))}
       </ul>
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        goToPage={goToPage}
-        fullLength={true}
-      />
+          listData={listData}
+          setEndpoint={setEndpoint}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          limit={limit}
+        />
     </div>
   );
 };
