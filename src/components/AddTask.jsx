@@ -14,12 +14,14 @@ function AddTask({ projectId, onSubmit, ...props }) {
 
   const [listData, setListData] = useState({});
   const [endpoint, setEndpoint] = useState(
-    `http://127.0.0.1:8000/api/tasks/?project=${projectId}&limit=${limit}&offset=0`
+    `http://127.0.0.1:8000/api/tasks/?limit=${limit}&offset=0`
   );
 
   useEffect(() => {
+    const url = new URL(endpoint);
+    url.searchParams.set("project", projectId);
     axios
-      .get(endpoint)
+      .get(url.toString())
       .then((response) => {
         setTasks(response.data["results"]);
         setListData(response.data);

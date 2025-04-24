@@ -1,15 +1,18 @@
 import React from "react";
 
-const Pagination = ({ listData, setEndpoint, currentPage, setCurrentPage, limit }) => {
-  console.log("listData", listData);
-  console.log(Math.floor(listData.count / limit))
-  console.log("currentPage", currentPage);
+const Pagination = ({
+  listData,
+  setEndpoint,
+  currentPage,
+  setCurrentPage,
+  limit,
+}) => {
   return (
     <div className="flex justify-center space-x-2">
       {/* Previous button */}
       <button
         onClick={() => {
-          setEndpoint(listData.previous)
+          setEndpoint(listData.previous);
           setCurrentPage((prev) => prev - 1);
         }}
         disabled={currentPage === 1}
@@ -21,7 +24,7 @@ const Pagination = ({ listData, setEndpoint, currentPage, setCurrentPage, limit 
       {/* Next button */}
       <button
         onClick={() => {
-          setEndpoint(listData.next)
+          setEndpoint(listData.next);
           setCurrentPage((prev) => prev + 1);
         }}
         disabled={currentPage === Math.ceil(listData.count / limit)}

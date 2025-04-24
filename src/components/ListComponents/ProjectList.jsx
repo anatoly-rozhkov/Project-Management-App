@@ -9,8 +9,6 @@ function ProjectList({ currentProject, onProjectClick, projects, setProjects, ..
   const [listData, setListData] = useState({});
   const [endpoint, setEndpoint] = useState(`http://127.0.0.1:8000/api/projects/?limit=${limit}&offset=0`);
 
-  // Finish pagination with new refs
-
   useEffect(() => {
     axios
       .get(endpoint)
