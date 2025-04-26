@@ -1,13 +1,21 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Pagination from "./Pagianation";
 import axios from "axios";
 
-function ProjectList({ currentProject, onProjectClick, projects, setProjects, ...props }) {
+function ProjectList({
+  currentProject,
+  onProjectClick,
+  projects,
+  setProjects,
+  ...props
+}) {
   const limit = 9;
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [listData, setListData] = useState({});
-  const [endpoint, setEndpoint] = useState(`http://127.0.0.1:8000/api/projects/?limit=${limit}&offset=0`);
+  const [endpoint, setEndpoint] = useState(
+    `http://127.0.0.1:8000/api/projects/?limit=${limit}&offset=0`
+  );
 
   useEffect(() => {
     axios
@@ -33,11 +41,11 @@ function ProjectList({ currentProject, onProjectClick, projects, setProjects, ..
   return (
     <div className="py-2 px-4 mb-4 ml-1">
       <ul className="text-gray-400 text-xl text-white">
-        {projects.map((obj, index) => (
+        {projects.map((obj) => (
           <li
             key={obj.id}
             className={`py-2 cursor-pointer hover:text-white ${
-              index === currentProject ? "bg-stone-800" : "bg-black"
+              obj.id === currentProject?.id ? "bg-stone-800" : "bg-black"
             }`}
             onClick={() => handleClick(obj)}
           >
@@ -62,6 +70,6 @@ function ProjectList({ currentProject, onProjectClick, projects, setProjects, ..
       ) : null}
     </div>
   );
-};
+}
 
 export default ProjectList;

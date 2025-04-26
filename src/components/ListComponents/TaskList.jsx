@@ -2,15 +2,23 @@ import React, { useState } from "react";
 import Pagination from "./Pagianation";
 import deleteItem from "../methods/DeleteMethod";
 
-function TaskList({ listData, setEndpoint, tasks, taskStatus, setTaskStatus, limit, ...props }) {
+function TaskList({
+  listData,
+  setEndpoint,
+  tasks,
+  taskStatus,
+  setTaskStatus,
+  limit,
+  ...props
+}) {
   const [currentPage, setCurrentPage] = useState(1);
 
-  async function handleClick(taskIndex) {
-    await deleteItem(`http://127.0.0.1:8000/api/tasks/${tasks[taskIndex].id}/`)
+  async function handleClick(taskId) {
+    await deleteItem(`http://127.0.0.1:8000/api/tasks/${taskId}/`);
     setTaskStatus((taskStatus) => taskStatus + 1);
-  };
+  }
 
-    // Calculate placeholders
+  // Calculate placeholders
   const placeholders = limit - tasks;
 
   const goToPage = (page) => {
@@ -20,12 +28,10 @@ function TaskList({ listData, setEndpoint, tasks, taskStatus, setTaskStatus, lim
   return (
     <div className="bg-stone-100 bg-stone-200 w-[90%] mx-auto rounded-md space-y-4 pt-4 pb-4">
       <ul className="space-y-5">
-        {tasks.map((obj, index) => (
+        {tasks.map((obj) => (
           <div key={obj.id} className="flex justify-between items-center px-4">
             <li className="font-bold">{obj.name}</li>
-            <button onClick={() => handleClick(obj)}>
-              Clear
-            </button>
+            <button onClick={() => handleClick(obj.id)}>Clear</button>
           </div>
         ))}
         {Array.from({ length: placeholders }).map((_, index) => (
@@ -35,14 +41,14 @@ function TaskList({ listData, setEndpoint, tasks, taskStatus, setTaskStatus, lim
         ))}
       </ul>
       <Pagination
-          listData={listData}
-          setEndpoint={setEndpoint}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          limit={limit}
-        />
+        listData={listData}
+        setEndpoint={setEndpoint}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        limit={limit}
+      />
     </div>
   );
-};
+}
 
 export default TaskList;
