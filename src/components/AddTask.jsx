@@ -1,11 +1,11 @@
 import React from "react";
 import TaskList from "./ListComponents/TaskList";
-import PostPethod from "./methods/PostMethod";
+import PostMethod from "./methods/PostMethod";
 import { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
+import api from "./methods/RefreshMethod";
 
-function AddTask({ projectId, onSubmit, ...props }) {
+const AddTask = ({ projectId, ...props }) => {
   const limit = 7;
 
   const [currentProject, setCurrentProject] = React.useState(null);
@@ -13,14 +13,12 @@ function AddTask({ projectId, onSubmit, ...props }) {
   const [taskStatus, setTaskStatus] = useState(0);
 
   const [listData, setListData] = useState({});
-  const [endpoint, setEndpoint] = useState(
-    `http://127.0.0.1:8000/api/tasks/?limit=${limit}&offset=0`
-  );
+  const [endpoint, setEndpoint] = useState(`tasks/?limit=${limit}&offset=0`);
 
   useEffect(() => {
-    const url = new URL(endpoint);
+    const url = new URL(endpoint, api.defaults.baseURL);
     url.searchParams.set("project", projectId);
-    axios
+    api
       .get(url.toString())
       .then((response) => {
         setTasks(response.data["results"]);
@@ -30,8 +28,8 @@ function AddTask({ projectId, onSubmit, ...props }) {
   }, [taskStatus, projectId, endpoint]);
 
   useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:8000/api/projects/${projectId}/`)
+    api
+      .get(`projects/${projectId}/`)
       .then((response) => setCurrentProject(response.data))
       .catch((error) => console.error(error));
   }, [projectId]);
@@ -40,7 +38,7 @@ function AddTask({ projectId, onSubmit, ...props }) {
     event.preventDefault();
 
     const title = event.target.elements.title.value;
-    await PostPethod("http://127.0.0.1:8000/api/tasks/", {
+    await PostMethod("tasks/", {
       name: title,
       project: projectId,
     });
@@ -48,55 +46,6 @@ function AddTask({ projectId, onSubmit, ...props }) {
     event.target.reset();
     setTaskStatus((taskStatus) => taskStatus + 1);
   };
-
-  // console.log("{project} this is retrieved project".replace("{project}", project))
-  // console.log("{error} if any error".replace("{error}", error))
-
-  // const project = projects[projectIndex];
-
-  // const handleIndex = (taskIndex, currentProjectIndex) => {
-  //   setProjects((prevProjects) => {
-  //     if (
-  //       currentProjectIndex < 0 ||
-  //       currentProjectIndex >= prevProjects.length
-  //     ) {
-  //       console.error("Invalid project index:", currentProjectIndex);
-  //       return prevProjects;
-  //     }
-
-  //     // Create a copy of the projects array
-  //     const updatedProjects = [...prevProjects];
-
-  //     // Get the specific project
-  //     const currentProject = updatedProjects[currentProjectIndex];
-
-  //     if (taskIndex < 0 || taskIndex >= currentProject.tasks.length) {
-  //       console.error("Invalid task index:", taskIndex);
-  //       return prevProjects;
-  //     }
-
-  //     // Create a copy of the tasks array without the task at taskIndex
-  //     const updatedTasks = [
-  //       ...currentProject.tasks.slice(0, taskIndex),
-  //       ...currentProject.tasks.slice(taskIndex + 1),
-  //     ];
-
-  //     // Update the tasks array for the specific project
-  //     updatedProjects[currentProjectIndex] = {
-  //       ...currentProject,
-  //       tasks: updatedTasks,
-  //     };
-
-  //     return updatedProjects;
-  //   });
-  // };
-  // const taskIndexRef = React.useRef((taskIndex) =>
-  //   handleIndex(taskIndex, projectIndex)
-  // );
-
-  // useEffect(() => {
-  //   taskIndexRef.current = (taskIndex) => handleIndex(taskIndex, projectIndex);
-  // }, [projectIndex]);
 
   const capitalizeTitle = (title) => {
     return title.replace(/\b\w/g, (char) => char.toUpperCase());
@@ -154,6 +103,6 @@ function AddTask({ projectId, onSubmit, ...props }) {
       </div>
     );
   }
-}
+};
 
 export default AddTask;

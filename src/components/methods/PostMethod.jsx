@@ -1,16 +1,13 @@
-async function PostPethod(endpoint, objectData) {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(objectData),
-    });
-  
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.detail || "Failed to create item");
-    }
-    
-    return response.json();
+import api from "./RefreshMethod";
+
+async function PostMethod(endpoint, objectData) {
+  try {
+    const response = await api.post(endpoint, objectData);
+    return response.data;
+  } catch (error) {
+    const errorMsg = error.response?.data?.detail || "Failed to create item";
+    throw new Error(errorMsg);
   }
-  
-  export default PostPethod;
+}
+
+export default PostMethod;

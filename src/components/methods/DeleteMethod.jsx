@@ -1,11 +1,11 @@
-import axios from 'axios';
+import api from "./RefreshMethod";
 
 async function deleteItem(endpoint) {
   try {
-    await axios.delete(endpoint);
+    await api.delete(endpoint);
   } catch (error) {
-    console.error('Error deleting item:', error);
+    console.error("Error deleting item:", error);
   }
-};
+}
 
 export default deleteItem;

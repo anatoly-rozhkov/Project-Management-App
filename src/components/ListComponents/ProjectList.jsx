@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Pagination from "./Pagianation";
-import axios from "axios";
+import api from "../methods/RefreshMethod";
 
 function ProjectList({
   currentProject,
@@ -13,12 +13,10 @@ function ProjectList({
 
   const [currentPage, setCurrentPage] = useState(1);
   const [listData, setListData] = useState({});
-  const [endpoint, setEndpoint] = useState(
-    `http://127.0.0.1:8000/api/projects/?limit=${limit}&offset=0`
-  );
+  const [endpoint, setEndpoint] = useState(`projects/?limit=${limit}&offset=0`);
 
   useEffect(() => {
-    axios
+    api
       .get(endpoint)
       .then((response) => {
         setProjects(response.data["results"]);
