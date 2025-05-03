@@ -14,7 +14,7 @@ function TaskList({
   const [currentPage, setCurrentPage] = useState(1);
 
   async function handleClick(taskId) {
-    await deleteItem(`http://127.0.0.1:8000/api/tasks/${taskId}/`);
+    await deleteItem(`tasks/${taskId}/`);
     setTaskStatus((taskStatus) => taskStatus + 1);
   }
 

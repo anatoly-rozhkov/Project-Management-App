@@ -18,7 +18,7 @@ function App() {
 
   async function handleProjectDeleteClick(projectId) {
     setEditorState("startingState");
-    await deleteItem(`http://127.0.0.1:8000/api/projects/${projectId}/`);
+    await deleteItem(`projects/${projectId}/`);
     setCurrentProject(null);
   }
 
