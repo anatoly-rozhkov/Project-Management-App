@@ -30,7 +30,10 @@ function ProjectList({
   };
 
   // Calculate placeholders
-  const placeholders = limit - projects;
+  const placeholders = limit - projects.length;
+  console.log("placeholders", placeholders);
+  console.log("projects", projects);
+  console.log("limit", limit);
 
   const goToPage = (page) => {
     setCurrentPage(page);

@@ -19,7 +19,7 @@ function TaskList({
   }
 
   // Calculate placeholders
-  const placeholders = limit - tasks;
+  const placeholders = limit - tasks.length;
 
   const goToPage = (page) => {
     setCurrentPage(page);
