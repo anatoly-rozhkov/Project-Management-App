@@ -2,13 +2,15 @@ import Register from "./Register";
 import RegistrationSuccessful from "./RegistrationSuccessful";
 import PostMethod from "../methods/PostMethod";
 
-const Login = ({ editorState, setEditorState }) => {
+const Login = () => {
+  const editorState = "welcomeState";
+  
   const handleLoginClick = () => {
-    setEditorState("welcomeState");
+    // setEditorState("welcomeState");
   };
 
   const handleRegisterClick = () => {
-    setEditorState("registerState");
+    // setEditorState("registerState");
   };
 
   const handleSubmit = async (event) => {
@@ -24,7 +26,7 @@ const Login = ({ editorState, setEditorState }) => {
     localStorage.setItem("accessToken", tokens.access);
     localStorage.setItem("refreshToken", tokens.refresh);
 
-    setEditorState("startingState");
+    // setEditorState("startingState");
   };
 
   return (

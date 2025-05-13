@@ -31,13 +31,6 @@ function ProjectList({
 
   // Calculate placeholders
   const placeholders = limit - projects.length;
-  console.log("placeholders", placeholders);
-  console.log("projects", projects);
-  console.log("limit", limit);
-
-  const goToPage = (page) => {
-    setCurrentPage(page);
-  };
 
   return (
     <div className="py-2 px-4 mb-4 ml-1">
