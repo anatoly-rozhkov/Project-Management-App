@@ -15,7 +15,7 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
-
+// TODO FIX THAT FUCKING NO REFRESH ERROR, NOW THAT TRY CATCH DOESN'T FUKCING WORK
 // Handle expired tokens and retry once with refresh token
 api.interceptors.response.use(
   (response) => response,
@@ -27,34 +27,35 @@ api.interceptors.response.use(
       error.response.status === 401 &&
       !originalRequest._retry
     ) {
+      console.log(originalRequest);
       originalRequest._retry = true;
+      console.log("this worked");
 
       const refreshToken = localStorage.getItem("refreshToken");
       if (!refreshToken) {
         return Promise.reject(error);
       }
 
-      const response = await api.post("/auth/refresh/", {
-        refresh: refreshToken,
-      });
+      try {
+        const response = await api.post("/auth/refresh/", {
+          refresh: refreshToken,
+        });
 
-      const newAccessToken = response.data.access;
-      localStorage.setItem("accessToken", newAccessToken);
+        const newAccessToken = response.data.access;
+        localStorage.setItem("accessToken", newAccessToken);
 
-      // Update the header and retry the original request
-      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-      return api(originalRequest);
-    } else if (
-      error.response &&
-      error.response.status === 401 &&
-      originalRequest._retry
-    ) {
-      // Refresh failed, force logout
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      return Promise.reject(refreshError);
+        // Update the header and retry the original request
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return api(originalRequest);
+
+      } catch (refreshError) {
+        console.log("Refresh token request failed:", refreshError);
+        console.error("Refresh token request failed:", refreshError);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        return Promise.reject(refreshError);
+      }
     }
-
     return Promise.reject(error);
   }
 );

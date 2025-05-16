@@ -1,12 +1,14 @@
 import PostMethod from "./methods/PostMethod";
-import { forwardRef } from "react";
+import { useRef } from "react";
 
-const AddProject = forwardRef(function AddProject({ ...props }, ref) {
+const AddProject = () => {
+  const formRef = useRef(null);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (props.onSubmit) {
-      const formData = new FormData(ref.current);
+      const formData = new FormData(formRef.current);
       const dataObject = Object.fromEntries(formData.entries());
       const newProject = await PostMethod("projects/", {
         name: dataObject.title,
@@ -20,7 +22,7 @@ const AddProject = forwardRef(function AddProject({ ...props }, ref) {
 
   return (
     <form
-      ref={ref}
+      ref={formRef}
       onSubmit={handleSubmit}
       className="px-10 rounded-lg bg-gray-100 w-full"
     >
@@ -81,6 +83,6 @@ const AddProject = forwardRef(function AddProject({ ...props }, ref) {
       </div>
     </form>
   );
-});
+};
 
 export default AddProject;
