@@ -1,28 +1,29 @@
 import PostMethod from "./methods/PostMethod";
-import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCurrentProject } from "../stores/projectSlice";
 
 const AddProject = () => {
-  const formRef = useRef(null);
+    const navigate = useNavigate();
+      const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (props.onSubmit) {
-      const formData = new FormData(formRef.current);
-      const dataObject = Object.fromEntries(formData.entries());
-      const newProject = await PostMethod("projects/", {
-        name: dataObject.title,
-        description: dataObject.description,
-        due_date: dataObject.date,
-      });
+    const formData = new FormData(event.target);
+    const dataObject = Object.fromEntries(formData.entries());
+    const newProject = await PostMethod("projects/", {
+      name: dataObject.title,
+      description: dataObject.description,
+      due_date: dataObject.date,
+    });
 
-      props.onSubmit(newProject);
-    }
+    dispatch(setCurrentProject(newProject));
+    navigate(`/projects/${newProject.id}`);
   };
 
   return (
     <form
-      ref={formRef}
       onSubmit={handleSubmit}
       className="px-10 rounded-lg bg-gray-100 w-full"
     >

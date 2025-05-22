@@ -1,30 +1,19 @@
 import AddTask from "../components/AddTask";
-import deleteItem from "../components/methods/DeleteMethod";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentProject } from "../stores/projectSlice";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Aside from "../components/Aside";
 
 const ProjectDetailPage = () => {
   const currentProject = useSelector((state) => state.project.currentProject);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  async function handleProjectDeleteClick(projectId) {
-    await deleteItem(`projects/${projectId}/`);
-    dispatch(setCurrentProject(null));
-    navigate("/projects");
-  }
+  // DODO 3) Check what happens on detail page refresh cos it breaks everything
+  // DODO 4) Still not clear what happens on toekn refresh cos it just sends infinte requests
 
   return (
     <div className="flex h-screen w-full bg-gray-100">
       <Aside />
-      <div className="mx-auto flex justify-end w-[90%]">
-        <button onClick={() => handleProjectDeleteClick(currentProject["id"])}>
-          Delete
-        </button>
+      <div className="flex flex-col flex-1 px-8 space-y-6 mt-12">
+        <AddTask currentProject={currentProject} />
       </div>
-      <AddTask projectId={currentProject["id"]} />
     </div>
   );
 };
