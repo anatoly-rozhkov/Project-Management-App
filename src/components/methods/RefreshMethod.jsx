@@ -25,36 +25,33 @@ api.interceptors.response.use(
     if (
       error.response &&
       error.response.status === 401 &&
-      !originalRequest._retry
+      !originalRequest._retry &&
+      originalRequest.url !== "/auth/refresh/"
     ) {
-      console.log(originalRequest);
+
       originalRequest._retry = true;
-      console.log("this worked");
 
       const refreshToken = localStorage.getItem("refreshToken");
       if (!refreshToken) {
         return Promise.reject(error);
       }
 
-      try {
-        const response = await api.post("/auth/refresh/", {
-          refresh: refreshToken,
-        });
+      const response = await api.post("/auth/refresh/", {
+        refresh: refreshToken,
+      });
 
-        const newAccessToken = response.data.access;
-        localStorage.setItem("accessToken", newAccessToken);
+      const newAccessToken = response.data.access;
+      localStorage.setItem("accessToken", newAccessToken);
 
-        // Update the header and retry the original request
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return api(originalRequest);
+      // Update the header and retry the original request
+      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+      return api(originalRequest);
 
-      } catch (refreshError) {
-        console.log("Refresh token request failed:", refreshError);
-        console.error("Refresh token request failed:", refreshError);
+    } else if (originalRequest.url === "/auth/refresh/") {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        return Promise.reject(refreshError);
-      }
+        window.location.reload();
+        return Promise.reject(error);
     }
     return Promise.reject(error);
   }

@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { setCurrentProject } from "../stores/projectSlice";
 
 const AddProject = () => {
-    const navigate = useNavigate();
-      const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,6 +22,10 @@ const AddProject = () => {
     navigate(`/projects/${newProject.id}`);
   };
 
+  const handleReset = () => {
+    navigate("/projects");
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -32,6 +36,7 @@ const AddProject = () => {
           id="discard-button"
           type="reset"
           className="w-28 bg-gray-100 text-black px-4 py-2 rounded-md"
+          onClick={handleReset}
         >
           Cancel
         </button>

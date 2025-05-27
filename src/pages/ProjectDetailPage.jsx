@@ -4,9 +4,10 @@ import Aside from "../components/Aside";
 
 const ProjectDetailPage = () => {
   const currentProject = useSelector((state) => state.project.currentProject);
-
+  
   // DODO 3) Check what happens on detail page refresh cos it breaks everything
-  // DODO 4) Still not clear what happens on toekn refresh cos it just sends infinte requests
+  // need to add a feature that would request project details if current project is null
+  
 
   return (
     <div className="flex h-screen w-full bg-gray-100">
