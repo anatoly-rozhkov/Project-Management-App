@@ -7,8 +7,9 @@ import deleteItem from "./methods/DeleteMethod";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCurrentProject } from "../stores/projectSlice";
+import { useSelector } from "react-redux";
 
-const AddTask = ({ currentProject }) => {
+const AddTask = ({ currentProjectId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,6 +21,8 @@ const AddTask = ({ currentProject }) => {
   const [listData, setListData] = useState({});
   const [endpoint, setEndpoint] = useState(`tasks/?limit=${limit}&offset=0`);
 
+  const currentProject = useSelector((state) => state.project.currentProject);
+
   async function handleProjectDeleteClick(projectId) {
     await deleteItem(`projects/${projectId}/`);
     dispatch(setCurrentProject(null));
@@ -27,9 +30,8 @@ const AddTask = ({ currentProject }) => {
   }
 
   useEffect(() => {
-    if (!currentProject) return;
     const url = new URL(endpoint, api.defaults.baseURL);
-    url.searchParams.set("project", currentProject.id);
+    url.searchParams.set("project", currentProjectId);
     api
       .get(url.toString())
       .then((response) => {
@@ -37,15 +39,14 @@ const AddTask = ({ currentProject }) => {
         setListData(response.data);
       })
       .catch((error) => console.error(error));
-  }, [taskStatus, currentProject, endpoint]);
+  }, [taskStatus, currentProjectId, endpoint]);
 
   useEffect(() => {
-    if (!currentProject) return;
     api
-      .get(`projects/${currentProject.id}/`)
-      .then((response) => setCurrentProject(response.data))
+      .get(`projects/${currentProjectId}/`)
+      .then((response) => dispatch(setCurrentProject(response.data)))
       .catch((error) => console.error(error));
-  }, [currentProject]);
+  }, [currentProjectId]);
 
   const submitTask = async (event) => {
     event.preventDefault();
@@ -53,7 +54,7 @@ const AddTask = ({ currentProject }) => {
     const title = event.target.elements.title.value;
     await PostMethod("tasks/", {
       name: title,
-      project: currentProject.id,
+      project: currentProjectId,
     });
 
     event.target.reset();
