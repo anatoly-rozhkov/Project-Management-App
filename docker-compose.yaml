@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  tm-front:
+    build: .
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    networks:
+    - tm_network
+
+networks:
+  tm_network:
+    external: true
+    name: tm_network
